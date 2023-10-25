@@ -1,12 +1,9 @@
 package gds.userhub.service;
 
-import gds.userhub.dao.dto.UserDto;
 import gds.userhub.dao.obj.Users;
-import gds.userhub.exceptions.MissingFieldsException;
 import gds.userhub.exceptions.UsersException;
 import gds.userhub.repository.UsersRepository;
 import lombok.AllArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -18,13 +15,12 @@ public class UserService {
 
     private UsersRepository usersRepository;
 
-    public Users createUser(UserDto userDto) {
-        Users newUser = new Users(userDto);
-        this.saveUser(newUser);
-        return newUser;
-    }
     public void saveUser(Users user){
         this.usersRepository.save(user);
+    }
+    public Users createUser(Users users) {
+        this.saveUser(users);
+        return users;
     }
 
     public List<Users> listAllUsers(){

@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -23,22 +24,30 @@ public class UsersController {
     public ResponseEntity<Users> postUsers(@RequestBody @Validated Users users) {
 
             Users newUser = usersService.createUser(users);
-
             return new ResponseEntity<>(newUser, HttpStatus.CREATED);
-
 
     }
 
     @GetMapping(value = "/listusers")
-    public ResponseEntity<List<Users>> findUsers(){
+    public ResponseEntity<List<UserDto>> findUsers(){
         List<Users> users = usersService.listAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
+        List<UserDto> dtos = new ArrayList<>();
+        for (Users userArray : users) {
+            UserDto userDto = new UserDto(userArray.getFullName(), userArray.getEmail());
+            dtos.add(userDto);
+        }
+
+        return new ResponseEntity<>(dtos, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{id}")
     @ResponseBody
-    public Users findUserById(@PathVariable long id) throws UsersException {
-            return usersService.findById(id);
+    public UserDto findUserById(@PathVariable long id) throws UsersException {
+
+            Users user = usersService.findById(id);
+            UserDto userDto = new UserDto(user.getFullName(), user.getEmail());
+
+            return userDto;
 
     }
 }

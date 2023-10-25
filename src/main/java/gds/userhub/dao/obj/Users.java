@@ -31,14 +31,4 @@ public class Users {
     @Column(name="password")
     @NotEmpty(message="Field -> Password cannot be null.")
     private String password;
-
-    public Users(UserDto userDTO) {
-        this.fullName = userDTO.fullName();
-        this.email = userDTO.email();
-    }
-
-    public void setSenha(String password) {
-        this.password = BCrypt.hashpw(password, BCrypt.gensalt());
-    }
-
 }
