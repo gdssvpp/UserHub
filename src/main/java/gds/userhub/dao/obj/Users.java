@@ -31,4 +31,11 @@ public class Users {
     @Column(name="password")
     @NotEmpty(message="Field -> Password cannot be null.")
     private String password;
+
+    public void setPassword(String password) {
+        String salt = BCrypt.gensalt(12);
+        String hashedPassword = BCrypt.hashpw(password, salt);
+
+        this.password = hashedPassword;
+    }
 }
